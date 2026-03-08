@@ -138,23 +138,23 @@ textarea, .output-box {
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left;">
         <div>
             <h4 style="margin-bottom: 8px;">1. Paste or Drop</h4>
-            <p style="color: #8b949e; font-size: 13px;">Simply paste your raw JSON string or drag-and-drop a .txt log file into the input area. Our tool automatically detects the content.</p>
+            <p style="color: var(--text); opacity: 0.8; font-size: 13px;">Simply paste your raw JSON string or drag-and-drop a .txt log file into the input area. Our tool automatically detects the content.</p>
         </div>
         <div>
             <h4 style="margin-bottom: 8px;">2. Process Locally</h4>
-            <p style="color: #8b949e; font-size: 13px;">The formatting is done entirely in your browser using JavaScript. No data is sent to our servers, keeping your transaction logs secure.</p>
+            <p style="color: var(--text); opacity: 0.8; font-size: 13px;">The formatting is done entirely in your browser using JavaScript. No data is sent to our servers, keeping your transaction logs secure.</p>
         </div>
         <div>
             <h4 style="margin-bottom: 8px;">3. Choose Your View</h4>
-            <p style="color: #8b949e; font-size: 13px;">Toggle between <strong>Beautify</strong> for a clear hierarchy or <strong>Compact</strong> for a vertical, space-saving layout often needed for quick tracing.</p>
+            <p style="color: var(--text); opacity: 0.8; font-size: 13px;">Toggle between <strong>Beautify</strong> for a clear hierarchy or <strong>Compact</strong> for a vertical, space-saving layout often needed for quick tracing.</p>
         </div>
         <div>
             <h4 style="margin-bottom: 8px;">4. Export Results</h4>
-            <p style="color: #8b949e; font-size: 13px;">Copy the formatted code directly to your clipboard or download it as a text file for your testing documentation.</p>
+            <p style="color: var(--text); opacity: 0.8; font-size: 13px;">Copy the formatted code directly to your clipboard or download it as a text file for your testing documentation.</p>
         </div>
     </div>
 
-    <div style="background: #161b22; padding: 15px; border-radius: 8px; margin-top: 25px; border: 1px dashed #30363d;">
+    <div style="background: var(--header-bg); padding: 15px; border-radius: 8px; margin-top: 25px; border: 1px dashed #30363d;">
         <p style="margin: 0; font-size: 13px; color: #8b949e;">
             <strong>Pro Tip for Analysts:</strong> Use the <em>Compact</em> mode when analyzing long transaction logs to identify key-value pairs without excessive scrolling.
         </p>
@@ -300,6 +300,7 @@ window.addEventListener('DOMContentLoaded', () => {
 </footer>
 
 </html>
+
 
 
 
