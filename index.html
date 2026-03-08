@@ -120,10 +120,10 @@ textarea, .output-box {
     </div>
 
     <div class="toolbar">
-        <button class="btn btn-primary" onclick="changeMode('beautify')">✨ Beautify (Rapi)</button>
+        <button class="btn btn-primary" onclick="changeMode('beautify')">✨ Beautify</button>
         <button class="btn" onclick="changeMode('compact')" style="color:var(--orange); border-color:var(--orange)">📉 Minify (Compact)</button>
-        <button class="btn" onclick="copyResult()">📋 Salin</button>
-        <button class="btn" onclick="downloadFile()" style="color:var(--green); border-color:var(--green)">📥 Simpan .txt</button>
+        <button class="btn" onclick="copyResult()">📋 Copy to Clipboard</button>
+        <button class="btn" onclick="downloadFile()" style="color:var(--green); border-color:var(--green)">📥 Dwonload</button>
         <button class="btn" onclick="resetAll()" style="color:#f85149; border-color:#f85149">Reset</button>
         
         <div class="stats-panel">
@@ -300,6 +300,7 @@ window.addEventListener('DOMContentLoaded', () => {
 </footer>
 
 </html>
+
 
 
 
