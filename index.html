@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bot JSON Pro | Farhan Edition</title>
+    <style>
+        :root {
+    /* Tema Dark (Default) */
+    --bg: #0d1117;
+    --panel: #161b22;
+    --text: #c9d1d9;
+    --border: #30363d;
+    --blue: #58a6ff;
+    --green: #3fb950;
+    --orange: #f0883e;
+    /* Syntax Colors Dark */
+    --key: #ffffff;      /* Putih */
+    --string: #7ee787;   /* Biru */
+    --number: #f2cc60;   /* Kuning */
+    --boolean: #ff7b72;  /* Merah */
+}
+
+[data-theme="light"] {
+    /* Tema Light */
+    --bg: #ffffff;
+    --panel: #f6f8fa;
+    --text: #24292f;
+    --border: #d0d7de;
+    --blue: #0969da;
+    --green: #1a7f37;
+    --orange: #bc4c00;
+    /* Syntax Colors Light */
+    --key: #000000;      /* Hitam */
+    --string: #228B22;   /* Biru Gelap */
+    --number: #953800;   /* Coklat/Oranye */
+    --boolean: #cf222e;  /* Merah */
+}
+
+body { 
+    font-family: 'Inter', -apple-system, sans-serif; 
+    background: var(--bg); 
+    color: var(--text); 
+    transition: 0.3s; 
+    margin: 0; padding: 20px; 
+}
+
+.wrapper { max-width: 1200px; margin: auto; }
+
+.header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 20px; 
+    border-bottom: 1px solid var(--border); 
+    padding-bottom: 15px; 
+}
+
+.main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 850px) { .main-grid { grid-template-columns: 1fr; } }
+
+textarea, .output-box {
+    width: 100%; height: 550px; background: var(--panel); color: var(--text);
+    border: 1px solid var(--border); border-radius: 8px; padding: 15px;
+    font-family: 'Fira Code', monospace; font-size: 13px; box-sizing: border-box;
+    outline: none; transition: 0.2s;
+}
+
+.output-box { overflow: auto; }
+
+/* Pewarnaan Syntax */
+.key { color: var(--key); }
+.string { color: var(--string); }
+.number { color: var(--number); }
+.boolean { color: var(--boolean); }
+
+.toolbar { display: flex; gap: 10px; margin-top: 20px; align-items: center; flex-wrap: wrap; }
+
+.btn { 
+    padding: 10px 16px; border-radius: 6px; border: 1px solid var(--border); 
+    cursor: pointer; font-weight: 600; font-size: 13px; transition: 0.2s; 
+    background: var(--panel); color: var(--text); 
+}
+
+.btn-primary { background: var(--blue); color: white; border: none; }
+
+.theme-switch {
+    background: var(--panel); border: 1px solid var(--border);
+    color: var(--text); padding: 8px 15px; border-radius: 20px; cursor: pointer;
+}
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="header" style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+        <h2 style="margin:0">🛠️ Bot JSON <span style="color:var(--blue)">Pro</span></h2>
+        <p style="color:#8b949e; margin:5px 0">Tools khusus buat <b>System Test Analyst</b>.</p>
+    </div>
+    <button class="theme-switch" onclick="toggleTheme()" id="themeBtn">☀️ Light Mode</button>
+</div>
+
+    <div class="main-grid">
+        <div>
+            <label>Raw Input</label>
+            <textarea id="inputArea" placeholder="Paste JSON di sini..." oninput="autoProcess()"></textarea>
+        </div>
+        <div>
+            <label>Formatted Output</label>
+            <div id="outputBox" class="output-box">Hasil akan muncul di sini...</div>
+        </div>
+    </div>
+
+    <div class="toolbar">
+        <button class="btn btn-primary" onclick="changeMode('beautify')">✨ Beautify (Rapi)</button>
+        <button class="btn" onclick="changeMode('compact')" style="color:var(--orange); border-color:var(--orange)">📉 Minify (Compact)</button>
+        <button class="btn" onclick="copyResult()">📋 Salin</button>
+        <button class="btn" onclick="downloadFile()" style="color:var(--green); border-color:var(--green)">📥 Simpan .txt</button>
+        <button class="btn" onclick="resetAll()" style="color:#f85149; border-color:#f85149">Reset</button>
+        
+        <div class="stats-panel">
+            <span id="msgStatus" class="msg-status">Ready</span>
+            <span>Lines: <b id="lineCount">0</b></span>
+            <span>Chars: <b id="charCount">0</b></span>
+        </div>
+    </div>
+</div>
+
+<script>
+    const input = document.getElementById('inputArea');
+    const output = document.getElementById('outputBox');
+    const msg = document.getElementById('msgStatus');
+    let currentMode = 'beautify';
+
+    // Fungsi utama pengolah JSON
+    function processJSON(mode) {
+    const rawValue = input.value.trim();
+    if (!rawValue) {
+        output.innerHTML = "Hasil akan muncul di sini...";
+        output.className = "output-box";
+        updateStats(0, 0);
+        return;
+    }
+
+    try {
+        const obj = JSON.parse(rawValue);
+        let formatted = "";
+
+        if (mode === 'beautify') {
+            formatted = JSON.stringify(obj, null, 4);
+            output.style.whiteSpace = "pre";
+        } else {
+            formatted = JSON.stringify(obj, null, 0);
+            output.style.whiteSpace = "pre-wrap";
+            output.style.wordBreak = "break-all";
+        }
+
+        // FUNGSI PEWARNAAN (Syntax Highlighting)
+        output.innerHTML = syntaxHighlight(formatted);
+        output.className = "output-box valid";
+        
+        updateStats(formatted.split('\n').length, formatted.length);
+        msg.textContent = mode === 'beautify' ? "✨ Beautiful" : "📉 Compact";
+        msg.style.color = mode === 'beautify' ? "var(--blue)" : "var(--orange)";
+
+    } catch (e) {
+        output.textContent = "❌ Error: Format JSON tidak valid!\n\nDetail: " + e.message;
+        output.className = "output-box error";
+        updateStats(0, 0);
+    }
+}
+
+// Logika pewarnaan ala Pro
+function syntaxHighlight(json) {
+    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?)/g, function (match) {
+        let cls = 'number';
+        if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+                cls = 'key'; // Warna untuk Key
+            } else {
+                cls = 'string'; // Warna untuk Value String
+            }
+        } else if (/true|false/.test(match)) {
+            cls = 'boolean';
+        } else if (/null/.test(match)) {
+            cls = 'null';
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
+    });
+}
+
+    function autoProcess() { processJSON(currentMode); }
+    function changeMode(m) { currentMode = m; processJSON(m); }
+
+    function updateStats(l, c) {
+        document.getElementById('lineCount').textContent = l;
+        document.getElementById('charCount').textContent = c;
+    }
+
+    function copyResult() {
+        const text = output.textContent;
+        if (text.includes("Hasil akan muncul")) return;
+        navigator.clipboard.writeText(text);
+        msg.textContent = "✅ Copied!";
+        setTimeout(() => processJSON(currentMode), 2000);
+    }
+
+    function downloadFile() {
+        const content = output.textContent;
+        if (output.classList.contains('error') || content.includes("Hasil akan muncul")) {
+            alert("Gak ada data valid buat di-save, Han!");
+            return;
+        }
+        const blob = new Blob([content], { type: 'text/plain' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `log-json-${new Date().getTime()}.txt`;
+        a.click();
+    }
+
+    function resetAll() {
+        input.value = "";
+        processJSON('beautify');
+        msg.textContent = "Ready";
+    }
+
+    // Drag & Drop Support
+    input.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const file = e.dataTransfer.files[0];
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            input.value = ev.target.result;
+            processJSON(currentMode);
+        };
+        reader.readAsText(file);
+    });
+	
+	function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const targetTheme = currentTheme === 'light' ? 'dark' : 'light';
+    
+    document.documentElement.setAttribute('data-theme', targetTheme);
+    document.getElementById('themeBtn').textContent = targetTheme === 'light' ? '🌑 Dark Mode' : '☀️ Light Mode';
+    
+    // Simpan pilihan user di browser (Local Storage)
+    localStorage.setItem('theme', targetTheme);
+}
+
+// Cek tema yang tersimpan saat halaman dibuka
+window.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.getElementById('themeBtn').textContent = savedTheme === 'light' ? '🌑 Dark Mode' : '☀️ Light Mode';
+});
+
+</script>
+
+</body>
+</html>
