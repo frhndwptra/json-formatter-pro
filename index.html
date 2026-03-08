@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSON Tracer Pro - Fast & Secure Formatter</title>
+    <title>JSON Tracer Pro - Professional Log Formatter & Debugger</title>
     <style>
         :root {
     /* Tema Dark (Default) */
@@ -95,19 +95,23 @@ textarea, .output-box {
 <div class="wrapper">
     <div class="header" style="display: flex; justify-content: space-between; align-items: center;">
     <div>
-        <h2 style="margin:0">🛠️ JSON Formatter <span style="color:var(--blue)">Pro</span></h2>
-        <p style="color:#8b949e; margin:5px 0">Professional JSON formatter for transaction logs and API debugging.</p>
+        <h2 style="margin:0; letter-spacing: -1px;">
+            <span style="color:var(--blue)">JSON</span>Tracer <span style="font-weight: 300; opacity: 0.7;">Pro</span>
+        </h2>
+        <p style="color:#8b949e; margin:5px 0; font-size: 13px;">
+            Secure JSON formatting for transaction logs, API debugging, and data analysis.
+        </p>
     </div>
     <button class="theme-switch" onclick="toggleTheme()" id="themeBtn">☀️ Light Mode</button>
 </div>
 
     <div class="main-grid">
         <div>
-            <label>Raw Input</label>
+            <label>Source JSON / Log</label>
             <textarea id="inputArea" placeholder="Paste JSON di sini..." oninput="autoProcess()"></textarea>
         </div>
         <div>
-            <label>Formatted Output</label>
+            <label>Processed Result</label>
             <div id="outputBox" class="output-box">Hasil akan muncul di sini...</div>
         </div>
     </div>
@@ -261,3 +265,4 @@ window.addEventListener('DOMContentLoaded', () => {
 </body>
 
 </html>
+
